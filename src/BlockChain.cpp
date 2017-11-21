@@ -8,7 +8,7 @@
 
 namespace vez {
 
-	Block::Block() 
+	Block::Block()
 		: m_Index(0), m_Data("\0"), m_PData("\0")
 	{
 		GetLocalTime(&m_Time);
@@ -30,6 +30,10 @@ namespace vez {
 		return m_Index;
 	}
 
+	void Block::setData(const std::string& string) {
+		m_Data = string;
+	}
+
 	SYSTEMTIME Block::getTime() {
 		return m_Time;
 	}
@@ -43,15 +47,15 @@ namespace vez {
 	}
 
 	std::ostream& operator<< (std::ostream& stream, const Block& block) {
-		stream << "Block{ " << block.m_Index << ", " 
-			<< block.m_Time.wDay << "." << block.m_Time.wMonth << "." << block.m_Time.wYear 
-			<< " " << block.m_Time.wHour << ":" << block.m_Time.wMinute << ":" 
+		stream << "Block{ " << block.m_Index << ", "
+			<< block.m_Time.wDay << "." << block.m_Time.wMonth << "." << block.m_Time.wYear
+			<< " " << block.m_Time.wHour << ":" << block.m_Time.wMinute << ":"
 			<< block.m_Time.wSecond << ":" << block.m_Time.wMilliseconds <<
 			" " << block.m_Data << " " << block.m_PData << " }";
 		return stream;
 	}
 
-	BlockChain::BlockChain() 
+	BlockChain::BlockChain()
 	{
 		m_Length = 10;
 		m_Collection = new Block[m_Length];
@@ -81,7 +85,7 @@ namespace vez {
 			m_Collection[m_CurrentIndex] = newBlock;
 			m_CurrentIndex++;
 		}
-		
+
 	}
 
 	void BlockChain::print() {
@@ -100,7 +104,7 @@ namespace vez {
 
 	Block BlockChain::nextBlock(Block prevBlock) {
 		SHA256 sha256;
-		int index = prevBlock.getIndex()+1;
+		int index = prevBlock.getIndex() + 1;
 		SYSTEMTIME time;
 		GetLocalTime(&time);
 		std::string data = sha256(prevBlock.getData());
@@ -110,11 +114,11 @@ namespace vez {
 
 	bool BlockChain::isValidBlock(Block newBlock, Block prevBlock) {
 		if (newBlock.getIndex() != prevBlock.getIndex() + 1) {
-			std::cout << "Wrong index!" << std::endl;
+			std::cout << "Wrong index int this block!" << std::endl;
 			return false;
 		}
 		else if (newBlock.getPData() != prevBlock.getData()) {
-			std::cout << "Wrong hash" << std::endl;
+			std::cout << "Wrong hash in prev block!" << std::endl;
 			return false;
 		}
 
@@ -126,7 +130,7 @@ namespace vez {
 		if (len > getLength()) {
 			free(m_Collection);
 			m_Collection = new Block[len];
-			memcpy(m_Collection, newChain.m_Collection, sizeof(BlockChain)*8);
+			memcpy(m_Collection, newChain.m_Collection, sizeof(BlockChain) * 8);
 		}
 		else {
 			std::cout << "Block chain is not valid!" << std::endl;
@@ -134,21 +138,24 @@ namespace vez {
 	}
 
 	bool BlockChain::isChainValid() {
+		Block current, prev;
 		for (int i = 1; i < m_Length; i++) {
-			Block	current = m_Collection[i], 
-					prev = m_Collection[i-1];
+			current = m_Collection[i],
+			prev = m_Collection[i - 1];
 
-			if (current.getPData() != prev.getData()) {
+			if (!isValidBlock(current, prev)) {
+				std::cout << "Something goes wrong with that block: " << prev << std::endl;
 				return false;
 			}
+			
 		}
 
 		return true;
 	}
+
+	void BlockChain::makeProblem() {
+		int index = m_Length / 2;
+		m_Collection[index].setData("labuda");
+	}
+
 }
-
-/*
-
-TODO: Нужно заменить char* на std::string и применить md5 
-
-*/

@@ -17,9 +17,10 @@ namespace vez {
 		Block();
 		Block(Block &block);
 		Block(int index, SYSTEMTIME time, const std::string &data, const std::string &spdata);
-	
+
 	public:
 		int getIndex();
+		void setData(const std::string& string); //for makeProblem()
 		SYSTEMTIME getTime();
 		std::string getData();
 		std::string getPData();
@@ -35,12 +36,12 @@ namespace vez {
 		int m_Length;
 		int m_CurrentIndex;
 		Block *m_Collection;
-	
+
 	public:
 
 		BlockChain();
 		BlockChain(int length);
-	
+
 	public:
 		int getLength();
 		int getCurrentIndex();
@@ -56,7 +57,7 @@ namespace vez {
 		bool isValidBlock(Block newBlock, Block prevBlock);
 		void replaceChain(BlockChain newChain);
 		bool isChainValid();
-
+		void makeProblem();
 	};
 
 }

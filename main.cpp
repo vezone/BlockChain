@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <cstring>
 
 #include "src\BlockChain.h"
@@ -11,20 +11,19 @@
 int main() {
 
 	using namespace vez;
-	
+
 	BlockChain blockchain(10);
 	Block currentblock = blockchain.createGenesis();
+	
 	while (blockchain.moveNext()) {
 		blockchain.push(currentblock);
 		currentblock = blockchain.nextBlock(currentblock);
 	}
-
-	blockchain.print();
 	
+	blockchain.makeProblem();
+
+	if (blockchain.isChainValid())
+		blockchain.print();
+
 	std::cin.get();
 }
-
-
-/*
-TODO: Прога совсем не ловит ошибки
-*/
