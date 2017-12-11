@@ -51,8 +51,6 @@ namespace vez {
 		return *this;
 	}
 	
-
-	
 	std::ostream& operator<<(std::ostream& stream, const matrix& mat) { //work
 		for (int col = 0; col < mat.m_NumberOfColumns; col++) {
 			for (int row = 0; row < mat.m_NumberOfRows; row++) {

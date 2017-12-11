@@ -2,11 +2,13 @@
 #include <omp.h>
 #include <cstdio>
 #include <fstream>
-
+#include <sstream>
+#include <ctime>
 
 #include "src\ParalelStuff.cpp" //iostream, ctime
 #include "src\Timer.h"
 #include "src\mString.h"
+#include "src\Data.h"
 
 #ifndef log
     #define log(x) std::cout << #x[1] << #x[2] << #x[3] << #x[4] << ":\n" << x << std::endl;
@@ -24,14 +26,6 @@
 				 var.Print(#var)
 #endif
 
-void readFile(const char* path, std::string& output) {
-	std::ifstream stream("code\\main.cpp");
-	std::string buf;
-	while(getline(stream, buf)) {
-		output += buf;
-		output += "\n";
-	}
-}
 
 int main() {
 	system("cls");
@@ -40,30 +34,33 @@ int main() {
 	using namespace vez;
 	
 	srand(time(NULL));
-	
-	matrix *mat1 = new matrix(30, 30, 5);
-	matrix *mat2 = new matrix(30, 30);
-	
-	//PCParalel *paral = new PCParalel();
-	//timer(paral->paraleling(mat2, mat1), paralTimer);
 
+//1 part of 4 ex (done)	
+//	matrix *mat1 = new matrix(300, 300, 5);
+//	matrix *mat2 = new matrix(300, 300);
+//	PCParalel *paral = new PCParalel();
+//	timer(paral->paraleling(mat2, mat1), paralTimer);
+//	lo(*mat1);
+//	lo(*mat2);
 	
+//2 part of 4 ex (done)
+	//PCParalel *paral2 = new PCParalel();
+	//timer(paral2->paraleling2(), paralTimer2);	
 	
-	/*mString *mstr = new mString("File is opened!");
-	writeIntoFile("Logger.txt",mstr);
-	*mstr = (const char*)"That's not me!";
-	writeIntoFile("Logger.txt",mstr);
-	
-	int length = fileLength("Logger.txt");
-	char* str = new char[length+1];
-	str = readFromFile("Logger.txt");
-	lo(str);*/
-	
-	
-	
-	std::string output;
-	readFile("code\\main.cpp", output);
-	lo(output);
+//3 part of 4 ex
+	//writeFile("code\\numbers.txt", 150);
+	PCParalel *paral3 = new PCParalel();
+	paral3->paraleling3();
+		
+	//Пример использования своего файлРидРайтСтафа
+	/*int length2 = fileLength("code\\main.cpp");
+	char* str2 = new char[length2+1];
+	readFromFile("code\\main.cpp", str2);
+	mString *mstr = new mString(str2);
+	writeIntoFile("code\\maintxt.txt", mstr);
+	lo(length2);
+//	lo(str2);
+	lo(*mstr);*/
 	
 	
 	std::cin.get();
